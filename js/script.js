@@ -16,19 +16,20 @@ const workHours = [
     "5:00 pm"
 ];
 
+// initial function
+function init() {
+    getCurrentHour(); // get the curretn our
+    getLocalStorage(); // get all data in local storage
+    renderTimeblock(); // render each timeblock
+    renderDateAndTime(); // render todays date and time
+}
+
 // get the current hour
 function getCurrentHour() {
     currentHour = moment().format("h:00 a");
 }
 
-// initial function
-function init() {
-    getCurrentHour();
-    getLocalStorage();
-    renderTimeblock();
-    renderDateAndTime(); // render todays date and time
-}
-
+// render thhe current date and time to the jumbotron
 function renderDateAndTime() {
     $("#currentDay").text(moment().format("dddd, Do MMMM YYYY, h:mm a"))
 }
@@ -36,33 +37,32 @@ function renderDateAndTime() {
 // render a timeblock row for each working hour
 function renderTimeblock(reset=false) {
     if (reset === true) {
-        timeblockList.html("") // clear all timeblocks on page
+        timeblockList.html("") // clear all timeblocks on page first
     }
 
+    // go throug each work hour and render a timeblock for it
     workHours.forEach(hour => {
-        var hourBlock = $('<div>');
+        // create eachh column item
         var hourCol = $('<div>')
             .addClass("col-1 hour")
             .text(hour);
-
         var descCol = $('<textarea>')
             .addClass("col-10 description " + getTimeStyle(hour))
             .append(savedDescriptions[hour])
-
         var saveCol = $('<div>')
             .addClass("col-1 saveBtn")
             .append("<img src='./images/save.png'>")
 
+        // create the block and append each column to it then append it to the list of timeblocks
+        var hourBlock = $('<div>');
         hourBlock.addClass("row time-block");
         hourBlock.append(
             hourCol,
             descCol,
             saveCol
         )
-
         timeblockList.append(hourBlock);
     });
-
 }
 
 // get the style for the time block depending on the time
@@ -80,7 +80,7 @@ function getTimeStyle(hour) {
     }
 }
 
-// convert to 24 hour time
+// convert input to 24 hour time
 function convertTo24Hour(hour) {
     if (hour.includes("pm") && hour.includes("12")) {
         return parseInt(hour.split(":")[0]);
@@ -139,7 +139,7 @@ timeblockList.on("change", ".description", function() {
 
 // clear schedule buttonn clicked
 clearScheduleBtn.click(function() {
-    var confirmCoice = confirm("Are you sure you would like to clear your schedule?");
+    var confirmCoice = confirm("Are you sure you would like to clear your schedule? (Thhis action cannot be undone!)");
     if (confirmCoice === true) {
         localStorage.clear();
         renderTimeblock(reset=true)
