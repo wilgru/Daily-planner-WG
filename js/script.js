@@ -139,7 +139,7 @@ timeblockList.on("change", ".description", function() {
 
 // clear schedule buttonn clicked
 clearScheduleBtn.click(function() {
-    var confirmCoice = confirm("Are you sure you would like to clear your schedule? (Thhis action cannot be undone!)");
+    var confirmCoice = confirm("Are you sure you would like to clear your schedule? (This action cannot be undone!)");
     if (confirmCoice === true) {
         localStorage.clear();
         renderTimeblock(reset=true)
